@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="bg">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="description" content="Теренен формуляр за турилик: мониторинг, GPS, покривка по трансекти, хабитат, наклон, видимост и експорт." />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <title>Изследване на гнездови хабитат и гнездовата плътност при турилика (Burhinus oedicnemus)</title>
+  <style>
+    :root{--bg:#f1f5f9;--card:#fff;--ink:#0f172a;--muted:#64748b;--line:#cbd5e1;--accent:#0f172a;--ok:#166534;--bad:#b91c1c;--soft:#f8fafc;--blue:#1d4ed8;--green:#15803d;--yellow:#a16207;--orange:#c2410c;--red:#b91c1c;--violet:#7c3aed;--gray:#475569}
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent} html{-webkit-text-size-adjust:100%;text-size-adjust:100%} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.34;touch-action:manipulation}
+    header{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.96);border-bottom:1px solid #e2e8f0;backdrop-filter:blur(8px)}
+    .wrap{max-width:980px;margin:0 auto;padding:10px 12px}.head{display:flex;gap:10px;align-items:center;justify-content:space-between}.title{font-weight:800;font-size:16px;line-height:1.2}.title i{font-style:italic}.sub{font-size:11px;color:var(--muted)}
+    main{max-width:980px;margin:0 auto;padding:10px;display:grid;grid-template-columns:1fr;gap:12px}.card{background:var(--card);border:1px solid #e2e8f0;border-radius:16px;padding:12px;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+    h2{font-size:15px;margin:0 0 10px}.grid{display:grid;grid-template-columns:1fr;gap:9px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.grid4{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+    label{display:block;font-size:13px;font-weight:650;color:#334155;margin-bottom:5px}.hint{font-size:11px;color:var(--muted);margin-top:4px}
+    input,select,textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:9px 10px;font-size:16px;background:#fff;color:var(--ink);outline:none} textarea{min-height:76px;resize:vertical} input:focus,select:focus,textarea:focus{border-color:#475569;box-shadow:0 0 0 3px rgba(71,85,105,.12)} input[readonly]{background:#f8fafc;color:#475569}
+    button,.button{border:0;border-radius:12px;padding:10px 11px;font-size:14px;font-weight:750;background:var(--accent);color:#fff;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px}.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}.danger{background:#fee2e2;color:var(--bad);border:1px solid #fecaca}.ok{background:#dcfce7;color:var(--ok);border:1px solid #bbf7d0}.small{font-size:12px;padding:7px 9px;border-radius:10px}.full{width:100%}
+    .pillbar{display:flex;gap:7px;flex-wrap:wrap}.pill{background:#fff;border:1px solid var(--line);color:#334155;border-radius:999px;padding:8px 10px;font-size:12px}.pill.on{background:#0f172a;color:#fff;border-color:#0f172a}
+    .status{font-size:13px;color:#475569}.stickybar{position:sticky;bottom:0;background:linear-gradient(transparent,#f1f5f9 24%);padding:22px 0 2px;display:grid;grid-template-columns:1fr auto;gap:8px;z-index:4}.summary{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.metric{background:var(--soft);border:1px solid #e2e8f0;border-radius:13px;padding:9px}.metric b{font-size:16px}.metric span{display:block;font-size:11px;color:var(--muted)}
+    .record{border:1px solid #e2e8f0;border-radius:13px;padding:10px;margin-top:8px;background:#fff}.record .id{font-weight:800}.record .meta{font-size:12px;color:var(--muted)}.tabs{display:flex;gap:7px;overflow:auto;padding-bottom:2px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{white-space:nowrap;background:#fff;color:#334155;border:1px solid #e2e8f0}.tab.active{background:#0f172a;color:#fff;border-color:#0f172a}.hidden{display:none!important}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.row{display:flex;gap:8px}.row>*{flex:1}.section-note{font-size:12px;color:#475569;background:#f8fafc;border:1px solid #e2e8f0;padding:9px;border-radius:12px;margin-bottom:10px}.install-note{font-size:12px;color:#475569}.kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#e2e8f0;border-radius:5px;padding:1px 4px}
+    .cover-toolbar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}.cover-cats{display:grid;grid-template-columns:1fr 1fr;gap:7px}.catbtn{justify-content:flex-start;border:1px solid #e2e8f0;color:#0f172a;background:#fff}.catbtn span{width:12px;height:12px;border-radius:999px;display:inline-block}.cat-herbaceous{background:#22c55e}.cat-bareSoil{background:#a16207}.cat-gravelSmallStones{background:#94a3b8}.cat-largeStones{background:#64748b}.cat-exposedRock{background:#334155}.cat-juniper{background:#15803d}.cat-otherShrubs{background:#65a30d}.cat-litterMossLichen{background:#84cc16}.cat-anthropogenic{background:#ef4444}
+    .pointgrid{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;margin-top:10px}.pointcell{min-height:38px;border-radius:9px;background:#e2e8f0;border:1px solid rgba(15,23,42,.08);font-size:10px;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;cursor:pointer;line-height:1.05;padding:2px}.pointcell.empty{background:#f8fafc;color:#94a3b8}.pointcell .ptno{font-weight:850;font-size:10px}.pointcell .ptcat{font-weight:900;font-size:12px}.pointcell.empty .ptcat{font-weight:700;font-size:10px;color:#cbd5e1}.progressbar{height:9px;background:#e2e8f0;border-radius:999px;overflow:hidden;margin:8px 0}.progressbar>div{height:100%;background:#0f172a;width:0%}.cover-counts{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.cover-counts input{font-size:16px}.transect-scheme{background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;padding:10px;text-align:center;line-height:1.45;margin-bottom:10px;color:#334155}.transect-buttons{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:8px 0}.transect-btn{background:#fff;color:#334155;border:1px solid #cbd5e1}.transect-btn.active{background:#0f172a;color:#fff;border-color:#0f172a}.transect-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px}.transect-card{border:1px solid #e2e8f0;background:#fff;border-radius:14px;padding:9px}.transect-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:13px;font-weight:800}.transect-cells{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}.legend-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin:8px 0}.legend-item{display:flex;align-items:center;gap:6px;border:1px solid #e2e8f0;border-radius:10px;background:#fff;padding:6px 8px;font-size:12px;color:#334155}.legend-dot{width:13px;height:13px;border-radius:999px;display:inline-block;flex:0 0 auto}.stats-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}.stats-table th,.stats-table td{border-bottom:1px solid #e2e8f0;padding:7px 6px;text-align:left}.stats-table th{color:#475569;font-weight:800;background:#f8fafc}.stats-table td:nth-child(2),.stats-table td:nth-child(3){text-align:right;font-variant-numeric:tabular-nums}.stats-box{margin-top:10px}.warn{color:#b45309;font-weight:700}.oktext{color:#166534;font-weight:700}
+    @media (min-width:800px){main{grid-template-columns:1fr 330px}.grid{grid-template-columns:1fr 1fr}.wide{grid-column:1/-1}.grid4{grid-template-columns:repeat(4,1fr)}.summary{grid-template-columns:repeat(4,1fr)}.side{position:sticky;top:78px;align-self:start}.title{font-size:18px}.cover-cats{grid-template-columns:repeat(3,1fr)}.cover-counts{grid-template-columns:repeat(3,1fr)}}
+  </style>
+</head>
+<body>
+<header><div class="wrap head"><div><div class="title">Изследване на гнездови хабитат и гнездовата плътност при турилика (<i>Burhinus oedicnemus</i>)</div><div class="sub">PWA формуляр: GPS, мониторинг, хабитат, трансекти за покривка</div></div><button id="newBtn" class="small">＋ Нов</button></div></header>
+<main>
+  <section>
+    <div class="card status" id="status">Данните се съхраняват локално на устройството. Експортирай CSV/JSON/GeoJSON след терен.</div>
+    <div class="tabs" style="margin:10px 0"><button class="tab active" data-tab="basic">Основни</button><button class="tab" data-tab="survey">Мониторинг</button><button class="tab" data-tab="habitat">Хабитат</button><button class="tab" data-tab="coverpoints">Трансекти</button><button class="tab" data-tab="visibility">Видимост</button><button class="tab" data-tab="notes">Бележки</button></div>
+
+    <form id="form">
+      <div id="tab-basic" class="tabpane">
+        <div class="card"><h2>1. Основни данни и GPS</h2><div class="grid">
+          <div><label>ID</label><input id="id" name="id" /></div>
+          <div><label>Наблюдател</label><input name="observer" placeholder="име" /></div>
+          <div><label>Дата</label><input name="date" type="date" /></div>
+          <div><label>Час</label><input name="time" type="time" /></div>
+          <div class="wide"><label>Локация</label><input name="locality" placeholder="напр. Бесапарски ридове / конкретна точка" /></div>
+          <div><label>Тип площадка</label><select name="plotType"><option value="occupied">Заета площадка</option><option value="control">Контролна площадка</option><option value="nest">Гнездо</option><option value="territory_center">Център на териториална активност</option></select></div>
+          <div><label>Хабитатна страта</label><select name="habitatStratum"><option value="open_stony_steppe">Гола/камениста степ</option><option value="herbaceous_steppe">Тревиста степ с открит субстрат</option><option value="juniper_steppe">Открита степ с разредена хвойна</option><option value="fallow_mosaic">Угар/аграрен мозаечен хабитат</option></select></div>
+          <div class="wide"><div class="grid2"><button type="button" class="ghost full" id="gpsBtn">📍 Вземи GPS</button><button type="button" class="ghost full" id="copyCoordsBtn">📋 Копирай координати</button></div><div class="hint">GPS работи през HTTPS или инсталирана PWA. Ако браузърът поиска разрешение за локация, избери Allow/Разреши.</div></div>
+          <div><label>Latitude</label><input name="latitude" inputmode="decimal" /></div>
+          <div><label>Longitude</label><input name="longitude" inputmode="decimal" /></div>
+          <div><label>Надморска височина, m</label><input name="elevation" inputmode="decimal" /></div>
+          <div><label>GPS точност, m</label><input name="gpsAccuracy" inputmode="decimal" /></div>
+          <div class="wide"><label>Бележка за координатата</label><textarea name="coordinateNote" placeholder="точка от разстояние, реално гнездо, център на активност..."></textarea></div>
+        </div></div>
+      </div>
+
+      <div id="tab-survey" class="tabpane hidden">
+        <div class="card"><h2>2. Мониторинг и гнездово доказателство</h2><div class="grid">
+          <div><label>Гнездов статус</label><select name="breedingEvidence"><option value="confirmed_breeding">Доказано гнездене</option><option value="probable_territory">Вероятна гнездова територия</option><option value="possible_territory">Възможна територия</option><option value="non_breeding">Негнездово наблюдение</option></select></div>
+          <div><label>Първи метод на установяване</label><select name="firstDetectionMethod"><option value="passive_listening">Пасивно слушане</option><option value="playback_response">Реакция на провокация</option><option value="thermal_night">Термална оптика — нощ</option><option value="thermal_day">Термална оптика — ден</option><option value="visual_day">Дневно визуално наблюдение</option><option value="incidental">Случайно наблюдение</option></select></div>
+          <div class="wide"><label>Основа на регистрацията</label><div class="pillbar" id="detectionPills"><button type="button" class="pill" data-method="passive_listening">Пасивно слушане</button><button type="button" class="pill" data-method="playback_response">Провокация</button><button type="button" class="pill" data-method="thermal_night">Термална нощ</button><button type="button" class="pill" data-method="thermal_day">Термална ден</button><button type="button" class="pill" data-method="visual_day">Визуално</button></div></div>
+          <div><label>Брой птици</label><input name="numberOfBirds" inputmode="numeric" /></div>
+          <div><label>Брой посещения</label><input name="numberOfVisits" inputmode="numeric" /></div>
+          <div><label>Провокация използвана</label><select name="playbackUsed"><option value="no">Не</option><option value="yes">Да</option></select></div>
+          <div><label>Термална оптика</label><select name="thermalUsed"><option value="no">Не</option><option value="yes_night">Да — нощем</option><option value="yes_day">Да — денем</option><option value="yes_both">Да — денем и нощем</option></select></div>
+          <div><label>Сигурност</label><select name="confidence"><option value="confirmed">Потвърдено</option><option value="probable">Вероятно</option><option value="possible">Възможно</option><option value="unidentified">Неидентифициран топъл обект</option></select></div>
+          <div class="wide"><label>Поведение</label><textarea name="behaviour" placeholder="обаждане, реакция, посока, двойка, малки, отвличащо поведение..."></textarea></div>
+        </div></div>
+      </div>
+
+      <div id="tab-habitat" class="tabpane hidden">
+        <div class="card"><h2>3. Наклон, изложение и обобщена покривка</h2><div class="section-note">Тук остават обобщените данни за цялата площадка. Подробното въвеждане на точките по двата перпендикулярни трансекта е отделено в таб „Трансекти“ и автоматично попълва броя по категории.</div><div class="grid">
+          <div><label>Наклон 1, °</label><input name="slope1" inputmode="decimal" /></div><div><label>Наклон 2, °</label><input name="slope2" inputmode="decimal" /></div><div><label>Наклон 3, °</label><input name="slope3" inputmode="decimal" /></div><div><label>Изложение, азимут °</label><input name="aspectDeg" inputmode="decimal" /></div><div><label>Изложение, клас</label><select name="aspectClass"><option value="">—</option><option>flat</option><option>N</option><option>NE</option><option>E</option><option>SE</option><option>S</option><option>SW</option><option>W</option><option>NW</option></select></div>
+          <div><label>Общ брой точки</label><input name="totalPoints" inputmode="numeric" /><div class="hint">Стандартно: 100 точки = 4 лъча × 25 точки: N, S, W и E.</div></div>
+          <div class="wide"><h2 style="margin-top:4px">Брой точки по категории</h2><div class="cover-counts">
+            <div><label>Трева</label><input name="herbaceous" inputmode="numeric" /></div><div><label>Гола почва</label><input name="bareSoil" inputmode="numeric" /></div><div><label>Чакъл/дребни камъни</label><input name="gravelSmallStones" inputmode="numeric" /></div><div><label>Едри камъни</label><input name="largeStones" inputmode="numeric" /></div><div><label>Гола скала</label><input name="exposedRock" inputmode="numeric" /></div><div><label>Хвойна</label><input name="juniper" inputmode="numeric" /></div><div><label>Други храсти</label><input name="otherShrubs" inputmode="numeric" /></div><div><label>Постилка/мъх/лишеи</label><input name="litterMossLichen" inputmode="numeric" /></div><div><label>Антропогенен субстрат</label><input name="anthropogenic" inputmode="numeric" /></div>
+          </div></div>
+          <div class="wide summary" id="coverSummary"></div>
+        </div></div>
+      </div>
+
+      <div id="tab-coverpoints" class="tabpane hidden">
+        <div class="card"><h2>4. Трансекти: точково отчитане на покривката</h2>
+          <div class="section-note">
+            Стандартният протокол е организиран според схемата на площадката: два перпендикулярни 50 m трансекта през центъра C. Въвеждането е разделено на четири лъча по 25 точки: N, S, W и E. На терен избери активния лъч и натискай категорията, която попада под всяка следваща точка през 1 m.
+          </div>
+          <div class="transect-scheme mono" aria-label="Схема на трансектите">
+              N<br>
+              |<br>
+             25 m<br>
+              |<br>
+          W 25 m -- C -- 25 m E<br>
+              |<br>
+             25 m<br>
+              |<br>
+              S
+          </div>
+          <div class="cover-toolbar"><button type="button" class="ghost" id="undoPointBtn">↩ Назад 1 точка</button><button type="button" class="danger" id="clearPointsBtn">Изчисти точките</button></div>
+          <div class="metric"><b id="coverProgressText">0 / 100</b><span>въведени точки по трансектите</span><div class="progressbar"><div id="coverProgressBar"></div></div></div>
+          <div class="metric"><b id="activeTransectText">Активен лъч: N</b><span>натисни лъч, за да смениш посоката на въвеждане</span></div>
+          <div class="transect-buttons" id="transectButtons"></div>
+          <div class="section-note"><b>Цветова легенда:</b> същите цветове се използват както при бутоните за категории, така и в клетките на отделните точки.</div>
+          <div class="legend-grid" id="coverLegend"></div>
+          <div class="cover-cats" id="coverCategoryButtons"></div>
+          <div class="section-note">Клетките показват номера на точката и съкращението на категорията. Пример: <span class="kbd">7 ТР</span> = седма точка с тревиста растителност. Натискане върху клетка избира съответния лъч; ако клетката е попълнена, приложението предлага изтриване на тази точка.</div>
+          <div class="transect-grid" id="coverPointGrid"></div>
+          <div class="stats-box card" style="box-shadow:none;margin-top:10px"><h2>Статистика на покривката от трансектите</h2><div class="section-note" id="coverStatsStatus">Процентите се изчисляват автоматично от въведените точки. При стандартния протокол те са окончателни след попълване на всички 100 точки.</div><div id="coverStatsTable"></div></div>
+        </div>
+      </div>
+
+      <div id="tab-visibility" class="tabpane hidden">
+        <div class="card"><h2>5. Растителност, хвойна и хоризонтална видимост</h2><div class="grid">
+          <div><label>Средна височина на тревата, cm</label><input name="meanHerbHeight" inputmode="decimal" /></div><div><label>Максимална височина на тревата, cm</label><input name="maxHerbHeight" inputmode="decimal" /></div>
+          <div><label>Брой хвойнови групи</label><input name="juniperClumps" inputmode="numeric" /></div><div><label>Модел на хвойната</label><select name="juniperPattern"><option value="isolated">Единична</option><option value="scattered">Разредена</option><option value="grouped">Групирана</option><option value="semi_continuous">Почти непрекъсната</option></select></div>
+          <div><label>Средна височина на хвойна, cm</label><input name="meanJuniperHeight" inputmode="decimal" /></div><div><label>Максимална височина на хвойна, cm</label><input name="maxJuniperHeight" inputmode="decimal" /></div><div><label>Разстояние до най-близка хвойна, m</label><input name="nearestJuniperDistance" inputmode="decimal" /></div>
+          <div class="wide"><h2 style="margin-top:4px">Видимост по 8 посоки, %</h2><div class="grid4"><div><label>N</label><input name="visibilityN" inputmode="decimal" /></div><div><label>NE</label><input name="visibilityNE" inputmode="decimal" /></div><div><label>E</label><input name="visibilityE" inputmode="decimal" /></div><div><label>SE</label><input name="visibilitySE" inputmode="decimal" /></div><div><label>S</label><input name="visibilityS" inputmode="decimal" /></div><div><label>SW</label><input name="visibilitySW" inputmode="decimal" /></div><div><label>W</label><input name="visibilityW" inputmode="decimal" /></div><div><label>NW</label><input name="visibilityNW" inputmode="decimal" /></div></div></div>
+          <div class="wide summary" id="visibilitySummary"></div>
+        </div></div>
+      </div>
+
+      <div id="tab-notes" class="tabpane hidden">
+        <div class="card"><h2>6. Паша, безпокойство и бележки</h2><div class="grid">
+          <div><label>Индекс на паша 0–3</label><input name="grazingIndex" inputmode="numeric" /><div class="hint">0 няма; 1 слаба; 2 умерена; 3 силна.</div></div>
+          <div><label>Индекс на безпокойство 0–3</label><input name="disturbanceIndex" inputmode="numeric" /><div class="hint">0 няма; 1 слабо; 2 умерено; 3 силно.</div></div>
+          <div><label>Разстояние до път/трак, m</label><input name="distanceToRoad" inputmode="decimal" /></div><div><label>Разстояние до селище, m</label><input name="distanceToSettlement" inputmode="decimal" /></div>
+          <div class="wide"><label>Бележки за безпокойство</label><textarea name="disturbanceNotes"></textarea></div><div class="wide"><label>Общи бележки</label><textarea name="notes"></textarea></div>
+        </div></div>
+      </div>
+    </form>
+    <div class="stickybar"><button id="saveBtn">💾 Запази запис</button><button id="resetBtn" class="ghost">Нов</button></div>
+  </section>
+
+  <aside class="side">
+    <div class="card"><h2>Записи и експорт</h2><input id="search" placeholder="търсене" /><div class="grid2" style="margin:10px 0"><button id="csvBtn" class="ghost">⬇ CSV</button><button id="jsonBtn" class="ghost">⬇ JSON</button><button id="geojsonBtn" class="ghost">⬇ GeoJSON</button><button id="kmlBtn" class="ghost">⬇ KML</button></div><label class="button ghost full" style="margin-bottom:8px">⬆ Импорт JSON<input id="importFile" type="file" accept="application/json" hidden></label><div id="records"></div></div>
+    <div class="card install-note"><h2>Бърз протокол</h2><ol><li>Вземи GPS точка.</li><li>Определи occupied/control/nest.</li><li>Запиши метод на установяване.</li><li>Измери три наклона и изложение.</li><li>В таб „Трансекти“ въведи покривката по N/S/W/E лъчите.</li><li>Измери видимост в 8 посоки.</li><li>Запази и експортирай CSV/JSON/GeoJSON/KML.</li></ol></div>
+  </aside>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
